@@ -6,8 +6,8 @@ export const ComponentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 50rem;
-  /* margin: 20px 0; */
+width: 100vw;
+height: 100vh;
 `
 
 export const DetailContainer = styled.div`

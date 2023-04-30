@@ -37,6 +37,7 @@ export const Filters = () => {
       dispatch(filterByGenre(filter.genre))
     }
   }
+  
   const onOrderClick = (e) => {
     e.preventDefault()
     dispatch(sort(order))

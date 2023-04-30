@@ -15,13 +15,14 @@ export const DetailPage = () => {
   const { activeVideogame, loading } = useSelector(state => state)
 
   useEffect(() => {
-    dispatch(getVideogameById(id))
-    return () => {
-      dispatch(getVideogameById)
+    console.log('DetailPage mounted')
+    console.log('Active videogame:', activeVideogame)
+    if (!activeVideogame) {
+      dispatch(getVideogameById(id))
     }
-  }, [dispatch, id])
+  }, [dispatch, id, activeVideogame])
 
-
+  console.log('Active videogame:', activeVideogame);
   return (
     <>
       {
@@ -30,6 +31,7 @@ export const DetailPage = () => {
           : <ComponentContainer>
             <DetailContainer>
               <ImgContainer>
+              {console.log(activeVideogame)}
               {activeVideogame.image && <img src={activeVideogame.image} alt={activeVideogame.name} />}
               </ImgContainer>
               <BackButtonContainer>

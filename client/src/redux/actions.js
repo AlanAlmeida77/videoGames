@@ -61,15 +61,6 @@ export const filterBySource = (source) => {
 
 
 
-export const filterGenre = (genre) => {
-  return {
-    type: FILTER_GENRE,
-    payload: {
-      genre: genre
-    }
-  }
-}
-
 export const noFilters = () => {
   return {
     type: NO_FILTER
@@ -156,7 +147,7 @@ export const getVideogameById = (id) => {
       type: SET_LOADING_TRUE
     })
     try {
-      const { data } = await apiRequest.get(`api/videogames/${id}`)
+      const { data } = await apiRequest.get(`/${id}`)
       const { ok, videogame } = data
       if (ok) {
         dispatch({

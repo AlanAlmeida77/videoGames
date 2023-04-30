@@ -115,12 +115,14 @@ const rootReducer = (state = initialState, { type, payload }) => {
           })
           
       }
-    case FILTER_GENRE:
-      return {
-        ...state,
-        videogames: state.videogames.filter(
-          vg => vg.genres.some(genre => genre === payload))
-      }
+      case FILTER_GENRE:
+        const genre = payload.toLowerCase(); // convertir el género a minúsculas
+        return {
+          ...state,
+          videogames: state.videogames.filter(
+            vg => vg.genres.some(g => g.toLowerCase() === genre)
+          )
+        }
 
     // Sorts
     case NO_SORT:

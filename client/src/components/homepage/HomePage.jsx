@@ -3,7 +3,7 @@ import { ComponentContainer, SidebarComponent, MainComponent, PageSidebarAndMain
 import { Form } from "../form/Form"
 import { setModalOpen } from "../../redux/actions"
 import { Filters } from "../filters/Filters"
-import { VscAdd, VscRemove } from 'react-icons/vsc'
+
 import { Cards } from "../cards/Cards"
 import { Pagination } from '../pagination/Pagination'
 import { useEffect, useState } from 'react'
