@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
-import { getVideogameById } from "../../redux/actions"
+import { getVideogameById, removeActiveVideogame } from "../../redux/actions"
 import { Loading } from "../loading/Loading"
 import { AiFillStar } from 'react-icons/ai'
 import { TbArrowBackUp } from 'react-icons/tb'
@@ -15,14 +15,17 @@ export const DetailPage = () => {
   const { activeVideogame, loading } = useSelector(state => state)
 
   useEffect(() => {
-    console.log('DetailPage mounted')
-    console.log('Active videogame:', activeVideogame)
-    if (!activeVideogame) {
-      dispatch(getVideogameById(id))
+    dispatch(getVideogameById(id))
+    return () => {
+      dispatch(removeActiveVideogame())
     }
-  }, [dispatch, id, activeVideogame])
+  }, [id, dispatch])
 
-  console.log('Active videogame:', activeVideogame);
+  // Limpia la variable activeVideogame antes de mostrar los datos del juego
+  useEffect(() => {
+    dispatch(removeActiveVideogame())
+  }, [dispatch])
+
   return (
     <>
       {
@@ -31,11 +34,10 @@ export const DetailPage = () => {
           : <ComponentContainer>
             <DetailContainer>
               <ImgContainer>
-              {console.log(activeVideogame)}
-              {activeVideogame.image && <img src={activeVideogame.image} alt={activeVideogame.name} />}
+                <img src={activeVideogame.image} alt={activeVideogame.name} />
               </ImgContainer>
               <BackButtonContainer>
-                <button onClick={() => { navigate('-1') }}><TbArrowBackUp className="backIcon" /></button>
+                <button onClick={() => { navigate(-1) }}><TbArrowBackUp className="backIcon" /></button>
               </BackButtonContainer>
               <InfoContainer>
                 <div>
@@ -91,4 +93,4 @@ export const DetailPage = () => {
       }
     </>
   )
-}
+  }

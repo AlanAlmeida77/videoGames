@@ -143,11 +143,16 @@ export const getVideogames = (name) => {
 
 export const getVideogameById = (id) => {
   return async function (dispatch) {
+    if (typeof id !== 'string' || id.trim() === '') {
+      console.log('Invalid videogame id:', id);
+      return;
+    }
+
     dispatch({
       type: SET_LOADING_TRUE
     })
     try {
-      const { data } = await apiRequest.get(`/${id}`)
+      const { data } = await apiRequest.get(`api/videogames/${id}`)
       const { ok, videogame } = data
       if (ok) {
         dispatch({

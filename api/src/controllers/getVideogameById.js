@@ -5,59 +5,62 @@ const { validate } = require('uuid');
 
 const getVideogamesById = async (id) => {
   try {
+    let videogame;
+
     if (validate(id)) {
-      const dbVideogame = await searchOnDb(id);
-      if (dbVideogame) return dbVideogame;
-      throw Error('Videogame not found');
+      videogame = await searchOnDb(id);
     } else if (Number(id)) {
-      const apiVideogame = await searchOnApi(id);
-      if (apiVideogame) return apiVideogame;
-      throw Error('Videogame not found');
-    } else {
-      throw Error('Videogame not found');
+      try {
+        videogame = await searchOnApi(id);
+      } catch (error) {
+        // If the API call fails, search on the database
+        videogame = await searchOnDb(id);
+      }
     }
+
+    if (!videogame) throw new Error('Videogame not found');
+
+    return videogame;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
 const searchOnApi = async (id) => {
   const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`);
   const data = await response.json();
-  if (data.detail) {
-    throw Error('Videogame not found');
-  }
+
+  if (data.detail) throw new Error('Videogame not found');
+
   return {
     id: data.id,
     name: data.name,
     description: data.description_raw,
-    platforms: data.platforms.map(r => r.platform.name),
+    platforms: data.platforms.map((platform) => platform.platform.name),
     image: data.background_image || 'https://target.scene7.com/is/image/Target/Cat_Nav_VideoGames-201215-1608014929542',
     released: data.released,
     rating: data.rating_top,
-    genres: data.genres.map(genre => genre.name)
+    genres: data.genres.map((genre) => genre.name),
   };
 };
 
 const searchOnDb = async (id) => {
-  const auxVideogame = await Videogame.findByPk(id, {
-    include: Genre
+  const videogame = await Videogame.findByPk(id, {
+    include: Genre,
   });
-  if (!auxVideogame) {
-    throw Error('Videogame not found');
-  }
-  const { id: idDb, name, description, platforms, image, released, rating, genres } = auxVideogame;
+
+  if (!videogame) return null;
+
   return {
-    id,
-    name,
-    description,
-    platforms,
-    image,
-    released,
-    rating,
-    genres: genres.map(genre => genre.name),
+    id: videogame.id,
+    name: videogame.name,
+    description: videogame.description,
+    platforms: videogame.platforms,
+    image: videogame.image,
+    released: videogame.released,
+    rating: videogame.rating,
+    genres: videogame.genres.map((genre) => genre.name),
   };
 };
 
 module.exports = getVideogamesById;
-

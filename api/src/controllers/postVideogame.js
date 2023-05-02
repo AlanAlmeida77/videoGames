@@ -14,7 +14,7 @@ const postVideogame = async (nG) => {
     });
 
     const genresToAdd = await Genre.findAll({ where: { name: genres } });
-    await videogame.addGenres(genresToAdd);
+    videogame.addGenre(genresToAdd);
 
     return { videogame, created: true };
   } catch (error) {
@@ -22,4 +22,4 @@ const postVideogame = async (nG) => {
   }
 };
 
-module.exports = postVideogame;
+module.exports = {postVideogame};

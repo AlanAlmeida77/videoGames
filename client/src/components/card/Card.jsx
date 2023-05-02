@@ -1,19 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
 import { CardComponent, GenresContainer, ImgContainer, InfoContainer, NameContainer, RatingContainer, RatingStars } from "./StylesCard";
 import { AiFillStar } from 'react-icons/ai'
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
-export const Card = React.memo(({ videogame }) => {
+export const Card = ({ videogame }) => {
   const navigate = useNavigate();
 
-  const handleCardClick = (event) => {
-    event.preventDefault();
-    navigate(`/${videogame.id}`);
-  };
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    navigate(`api/videogames/${id}`);
+  }
 
   return (
     <CardComponent>
-      <Link to={`/${videogame.id}`} key={videogame.id} className='cardLink' onClick={handleCardClick}>
+      <a href={`api/videogames/${videogame.id}`} onClick={(e) => handleClick(e, videogame.id)} className='cardLink'>
         <ImgContainer>
           <img src={videogame.image} alt={videogame.name} />
         </ImgContainer>
@@ -45,7 +45,7 @@ export const Card = React.memo(({ videogame }) => {
             </div>
           </GenresContainer>
         </InfoContainer>
-      </Link>
+      </a>
     </CardComponent>
   )
-})
+}

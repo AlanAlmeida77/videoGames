@@ -42,6 +42,8 @@ export const Form = () => {
           genres: typeof form.genres === 'string' ? [...form.genres, value] : form.genres.some(genre => genre === value) ? [...form.genres] : [...form.genres, value]
         })
       )
+      console.log('Form:', form)
+      console.log('Errors:', errors)
       return
     }
     setForm({

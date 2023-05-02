@@ -1,5 +1,5 @@
 const Router = require('express')
-const postVideogame = require('../controllers/postVideogame')
+const {postVideogame} = require('../controllers/postVideogame')
 const getVideogames = require('../controllers/getVideogames')
 const getVideogamesById = require('../controllers/getVideogameById')
 const videogamesRouter = Router()
@@ -29,6 +29,7 @@ videogamesRouter.get('/', async (req, res) => {
 
 videogamesRouter.get('/:id', async (req, res) => {
   const { id } = req.params
+  console.log(`ID recibido: ${id}`);
   try {
     const videogame = await getVideogamesById(id)
     res.status(200).json({
@@ -47,7 +48,7 @@ videogamesRouter.post('/', async (req, res) => {
   const newVideogame = req.body
   try {
     const auxVideogame = await postVideogame(newVideogame)
-    const { id, name, image, rating, genres } = await getVideogamesById(auxVideogame.videogame.id)
+    //const { id, name, image, rating, genres } = await getVideogamesById(auxVideogame.videogame.id)
     res.status(200).json({
       response: auxVideogame.created
         ? {
