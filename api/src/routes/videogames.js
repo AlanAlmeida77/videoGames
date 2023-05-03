@@ -48,7 +48,7 @@ videogamesRouter.post('/', async (req, res) => {
   const newVideogame = req.body
   try {
     const auxVideogame = await postVideogame(newVideogame)
-    //const { id, name, image, rating, genres } = await getVideogamesById(auxVideogame.videogame.id)
+    const { id, name, image, rating, genres } = await getVideogamesById(auxVideogame.videogame.id)
     res.status(200).json({
       response: auxVideogame.created
         ? {

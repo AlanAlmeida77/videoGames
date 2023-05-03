@@ -13,11 +13,12 @@ const postVideogame = async (nG) => {
       rating
     });
 
-    const genresToAdd = await Genre.findAll({ where: { name: genres } });
-    videogame.addGenre(genresToAdd);
+    const genresToAdd = await Genre.findAll({ where: { id: genres } }).map(genre => genre.name);
+    videogame.addGenres(genresToAdd);
 
     return { videogame, created: true };
   } catch (error) {
+    console.log(error)
     throw Error(error.message);
   }
 };
